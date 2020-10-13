@@ -1,11 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import StepWizard from "react-step-wizard";
-
-import Nav from "./nav";
-import Plugs from "./Plugs";
-
 import styles from "./wizard.less";
-import transitions from "./transitions.less";
 /* eslint react/prop-types: 0 */
 
 /**
@@ -13,15 +8,7 @@ import transitions from "./transitions.less";
  */
 const Wizard = () => {
   const [state, updateState] = useState({
-    form: {},
-    transitions: {
-      enterRight: `${transitions.animated} ${transitions.enterRight}`,
-      enterLeft: `${transitions.animated} ${transitions.enterLeft}`,
-      exitRight: `${transitions.animated} ${transitions.exitRight}`,
-      exitLeft: `${transitions.animated} ${transitions.exitLeft}`,
-      intro: `${transitions.animated} ${transitions.intro}`
-    }
-    // demo: true, // uncomment to see more
+    form: {}
   });
 
   const updateForm = (key, value) => {
@@ -59,43 +46,22 @@ const Wizard = () => {
               onStepChange={onStepChange}
               isHashEnabled
               transitions={state.transitions} // comment out for default transitions
-              nav={<Nav />}
               instance={setInstance}
             >
               <First hashKey={"FirstStep"} update={updateForm} />
               <Second form={state.form} />
-              <Progress />
-              {null /* will be ignored */}
+              <Third form={state.form} />
               <Last hashKey={"TheEnd!"} />
             </StepWizard>
           </div>
         </div>
       </div>
-      {demo && SW && <InstanceDemo SW={SW} />}
     </div>
   );
 };
 
 export default Wizard;
 
-/** Demo of using instance */
-const InstanceDemo = ({ SW }) => (
-  <Fragment>
-    <h4>Control from outside component</h4>
-    <button className={"btn btn-secondary"} onClick={SW.previousStep}>
-      Previous Step
-    </button>
-    &nbsp;
-    <button className={"btn btn-secondary"} onClick={SW.nextStep}>
-      Next Step
-    </button>
-  </Fragment>
-);
-
-/**
- * Stats Component - to illustrate the possible functions
- * Could be used for nav buttons or overview
- */
 const Stats = ({
   currentStep,
   firstStep,
@@ -115,7 +81,7 @@ const Stats = ({
     )}
     {step < totalSteps ? (
       <button className="btn btn-primary btn-block" onClick={nextStep}>
-        Continue
+        Save & Continue
       </button>
     ) : (
       <button className="btn btn-success btn-block" onClick={nextStep}>
@@ -123,7 +89,7 @@ const Stats = ({
       </button>
     )}
     <hr />
-    <div style={{ fontSize: "21px", fontWeight: "200" }}>
+    {/*<div style={{ fontSize: "21px", fontWeight: "200" }}>
       <h4>Other Functions</h4>
       <div>Current Step: {currentStep}</div>
       <div>Total Steps: {totalSteps}</div>
@@ -136,7 +102,7 @@ const Stats = ({
       <button className="btn btn-block btn-default" onClick={() => goToStep(2)}>
         Go to Step 2
       </button>
-    </div>
+    </div>*/}
   </div>
 );
 
@@ -149,9 +115,9 @@ const First = (props) => {
 
   return (
     <div>
-      <h3 className="text-center">Welcome! Have a look around!</h3>
+      <h3 className="text-center">Personal Information</h3>
 
-      <label>First Name</label>
+      <label>First Name :</label>
       <input
         type="text"
         className="form-control"
@@ -171,47 +137,53 @@ const Second = (props) => {
       props.previousStep();
     }
   };
+  const update = (e) => {
+    props.update(e.target.name, e.target.value);
+  };
 
   return (
     <div>
       {props.form.firstname && <h3>Hey {props.form.firstname}! 👋</h3>}
-      I've added validation to the previous button.
+      <h3 className="text-center">Exam Details</h3>
+
+      <label>First Name :</label>
+      <input
+        type="text"
+        className="form-control"
+        name="firstname"
+        placeholder="First Name"
+        onChange={update}
+      />
       <Stats step={2} {...props} previousStep={validate} />
     </div>
   );
 };
 
-const Progress = (props) => {
-  const [state, updateState] = useState({
-    isActiveClass: "",
-    timeout: null
-  });
-
-  useEffect(() => {
-    const { timeout } = state;
-
-    if (props.isActive && !timeout) {
-      updateState({
-        isActiveClass: styles.loaded,
-        timeout: setTimeout(() => {
-          props.nextStep();
-        }, 3000)
-      });
-    } else if (!props.isActive && timeout) {
-      clearTimeout(timeout);
-      updateState({
-        isActiveClass: "",
-        timeout: null
-      });
+const Third = (props) => {
+  const validate = () => {
+    if (confirm("Are you sure you want to go back?")) {
+      // eslint-disable-line
+      props.previousStep();
     }
-  });
+  };
+  const update = (e) => {
+    props.update(e.target.name, e.target.value);
+  };
 
   return (
-    <div className={styles["progress-wrapper"]}>
-      <p className="text-center">Automated Progress...</p>
-      <div className={`${styles.progress} ${state.isActiveClass}`}>
-        <div className={`${styles["progress-bar"]} progress-bar-striped`} />
-      </div>
+    <div>
+      {props.form.firstname && <h3>Hey {props.form.firstname}! 👋</h3>}
+      <h3 className="text-center">Institution Details</h3>
+
+      <label>First Name :</label>
+      <input
+        type="text"
+        className="form-control"
+        name="firstname"
+        placeholder="First Name"
+        onChange={update}
+      />
+      <Stats step={3} {...props} previousStep={validate} />
     </div>
   );
 };
@@ -226,7 +198,6 @@ const Last = (props) => {
       <div className={"text-center"}>
         <h3>This is the last step in this example!</h3>
         <hr />
-        <Plugs />
       </div>
       <Stats step={4} {...props} nextStep={submit} />
     </div>
