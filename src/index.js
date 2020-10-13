@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Wizard from "./components/wizard";
+import MasterForm from "./components/MasterForm";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <React.StrictMode>
-    <Wizard />
+    <MasterForm />
   </React.StrictMode>,
   rootElement
 );

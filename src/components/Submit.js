@@ -9,7 +9,7 @@ const Submit = (props) => {
   return (
     <div>
       <div className={"text-center"}>
-        <h3>This is the last step in this example!</h3>
+        <h3>Review & Submit</h3>
         <hr />
       </div>
       <Stats step={4} {...props} nextStep={submit} />
