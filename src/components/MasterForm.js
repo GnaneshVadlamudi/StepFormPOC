@@ -6,6 +6,8 @@ import PersonalInfo from "./PersonalInfo";
 import ExamInfo from "./ExamInfo";
 import InstitutionInfo from "./InstitutionInfo";
 import Submit from "./Submit";
+import "./../css/custom.css";
+import "./../css/custom.css";
 
 const MasterForm = () => {
   const [state, updateState] = useState({

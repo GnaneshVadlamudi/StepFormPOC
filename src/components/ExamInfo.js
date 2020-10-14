@@ -25,6 +25,23 @@ const ExamInfo = (props) => {
         placeholder="First Name"
         onChange={update}
       />
+      <div className="row">
+        <div className="col-md-6">
+          <label>First Name</label>
+          <input
+            className="u-full-width"
+            placeholder="First Name"
+            type="text"
+            autoFocus
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6">
+          <label>Last Name</label>
+          <input className="u-full-width" placeholder="Last Name" type="text" />
+        </div>
+      </div>
       <Stats step={2} {...props} previousStep={validate} />
     </div>
   );
